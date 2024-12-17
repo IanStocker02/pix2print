@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  --primary-color: #1c1c1c; /* Panthera Metal */
+  --primary-hover-color: #2a2a2a; /* Slightly lighter shade */
+  --background-color: #f5f5f5; /* Light background color */
+  --red-accent: #ff4c4c; /* Dark text color */
+  --nav-background-color: #ffffff; /* White background for nav */
+  --nav-border-color: #e0e0e0; /* Light border color for nav */
+  --font-family: 'Inter Tight', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --border-radius: 8px;
+  --transition-duration: 0.3s;
+
+  font-family: var(--font-family);
+  line-height: 1.5;
+  font-weight: var(--font-weight-normal);
+
+  color-scheme: light dark;
+  color: var(--text-color);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: var(--font-weight-medium);
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--transition-duration);
+}
+a:hover {
+  color: var(--primary-hover-color);
+}
+
+body {
+  background-color: var(--primary-color); /* Use primary color for background */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--red-accent); /* Change font color to red */
+}
+
+#top-bar {
+  width: 100%;
+  background-color: var(--primary-color); /* Darker grey color */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+h1 {
+  font-size: 2.5em;
+  line-height: 1.1;
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  color: var(--red-accent); /* Change font color to red */
+}
+
+button {
+  border-radius: var(--border-radius);
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: var(--font-weight-medium);
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color var(--transition-duration), transform var(--transition-duration);
+}
+button:hover {
+  background-color: var(--primary-hover-color);
+  transform: scale(1.05);
+}
+button:active {
+  transform: scale(0.95);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+main {
+  color: #fff;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+tr {
+  border-radius: 10px;
+  background-color: #000;
+  color: white;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #333333;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around; /* Space out the buttons */
+}
+
+nav a {
+  font-weight: var(--font-weight-medium);
+  color: var(--red-accent); /* Change font color to red */
+  text-decoration: none;
+  margin: 0 15px;
+  transition: color var(--transition-duration), box-shadow var(--transition-duration);
+  background-color: var(--primary-color); /* Lighter grey background */
+  border: 1px solid var(--red-accent); /* Red outline */
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+nav a:hover {
+  color: var(--red-accent); /* Ensure font color remains red on hover */
+  box-shadow: 0 0 10px var(--red-accent); /* Red glow on hover */
+  background-color: var(--primary-hover-color);
+}
+.nav-item {
+  padding: 0 0.5rem;
+  list-style: none;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.active {
+  font-weight: 700;
+}
+
+.table {
+  width: 80vw;
+  table-layout: fixed;
+}
