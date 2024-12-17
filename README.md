@@ -55,3 +55,9 @@ src
 ├── App.tsx             # Main application component.
 ├── main.tsx            # Entry point of the application.
 └── index.css           # Global styles.
+
+
+
+
+# colorverter
+This application allows you to upload an image file and convert it into 3d-printable layers.
