@@ -30,12 +30,13 @@
 
 a {
   font-weight: var(--font-weight-medium);
-  color: var(--primary-color);
+  color: white;
   text-decoration: none;
-  transition: color var(--transition-duration);
+  transition: rgb(122, 122, 222) 0.3s ease 0s;
 }
 a:hover {
-  color: var(--primary-hover-color);
+  color: rgb(122, 122, 222);
+  transition: 0.3s ease 0s;
 }
 
 body {
@@ -143,6 +144,7 @@ nav a:hover {
   box-shadow: 0 0 10px var(--red-accent); /* Red glow on hover */
   background-color: var(--primary-hover-color);
 }
+
 .nav-item {
   padding: 0 0.5rem;
   list-style: none;
