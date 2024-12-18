@@ -3,8 +3,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 
 import App from './App.tsx';
-import Page1 from './pages/page1.tsx';
-import Page2 from './pages/page2.tsx';
+import Start from './pages/start.tsx';
+import LoginPage from './pages/login.tsx';
 import ErrorPage from './pages/ErrorPage.tsx';
 
 const router = createBrowserRouter([
@@ -18,12 +18,12 @@ const router = createBrowserRouter([
         element: <div>Home Page</div>,
       },
       {
-        path: 'page1',
-        element: <Page1 />,
+        path: 'start',
+        element: <Start />,
       },
       {
-        path: 'page2',
-        element: <Page2 />,
+        path: 'loginpage',
+        element: <LoginPage />,
       },
     ],
   },
