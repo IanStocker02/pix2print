@@ -145,17 +145,8 @@ main {
 }
 
 /* Styling for the login page */
-form {
-  max-width: 400px;
-  width: 100%;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: var(--border-radius);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
 input {
+  justify-content: center;
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -175,6 +166,7 @@ button {
 
 button:hover {
   background-color: #005f99;
+  transition: 3ms;
 }
 
 a {

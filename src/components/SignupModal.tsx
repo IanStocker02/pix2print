@@ -1,4 +1,5 @@
 import React from 'react';
+import '../assets/SignupModal.css';
 
 const SignupModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;

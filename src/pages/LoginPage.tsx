@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SignupModal from '../components/SignupModal';
+import '../assets/SignupModal.css'
 
 const LoginPage = () => {
   const [isSignupOpen, setSignupOpen] = useState(false);
