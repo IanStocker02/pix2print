@@ -1,19 +1,18 @@
-# GitHub Candidate Profiler
+# Pix2Print
 
 ## Overview
-GitHub Candidate Profiler is a web application designed to help employers search for potential candidates on GitHub. The application allows users to view candidate profiles, save potential candidates, and manage a list of saved candidates. It leverages the GitHub API to fetch candidate information and provides an intuitive interface for employers to review and manage candidates.
+Pix2Print is a web-based application built with Python that enables users to upload 2D images and transform them into 3D-printable files. The application analyzes the uploaded image, extracts its distinct colors, and converts each color into a separate 3D-printable layer. This innovative process allows users to bring their 2D images to life as vibrant, multi-layered 3D prints.
+
 
 ## Features
-- **Candidate Search**: View detailed information about GitHub users, including their name, username, location, avatar, email, profile URL, and company.
-- **Save Candidates**: Save potential candidates to a list for future reference.
-- **Skip Candidates**: Skip candidates that are not suitable.
-- **Saved Candidates List**: View a list of previously saved candidates with their details.
-- **Persistent Storage**: Saved candidates are stored locally and persist across page reloads.
-
+- **PNG to STL Conversion**: Seamlessly converts PNG images into multiple STL file layers for 3D printing.
+- **Customizable Layer Output**: Allows users to adjust the number of color layers extracted from the original image.
+- **Configurable Resolution**: Provides the ability to modify the resolution of the generated 3D layers to suit user preferences or project requirements.
+- **Tier-Based Subscription**: Offers flexible subscription plans, granting access to features like higher resolution outputs or additional layers based on the selected tier.
 ## Installation
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/github-candidate-profiler.git
+    git clone git@github.com:IanStocker02/pix2print.git
     ```
 
 2. Install dependencies:
@@ -34,28 +33,17 @@ GitHub Candidate Profiler is a web application designed to help employers search
     ```
 
 ## Usage
-### Navigate to the Candidate Search page:
-- The application will automatically fetch and display a candidate's information.
-- Use the "+" button to save a candidate to the list of potential candidates.
-- Use the "-" button to skip a candidate and view the next one.
+### Navigate to the Start Converting page:
+- Upload your image in PNG format that you would like to convert
+- Select amount of colors and resolution settings
+- Click convert
 
-### View Saved Candidates:
-- Navigate to the Saved Candidates page to view a list of saved candidates.
-- The list will persist across page reloads.
+### View Saved STL conversions:
+- blank
+- blank
 
 ## Project Structure
 ```plaintext
-src
-│
-├── api/                # Contains API functions for fetching candidate data from GitHub.
-├── components/         # Contains reusable React components.
-├── interfaces/         # Contains TypeScript interfaces.
-├── pages/              # Contains page components for different routes.
-│
-├── App.tsx             # Main application component.
-├── main.tsx            # Entry point of the application.
-└── index.css           # Global styles.
-
 
 
 
