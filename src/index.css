@@ -67,6 +67,10 @@ main {
   width: 100%;
   padding: 40px 20px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 #hero {
@@ -78,6 +82,7 @@ main {
 }
 
 #hero h2 {
+  color: white;
   font-size: 2.5em;
   margin-bottom: 20px;
 }
@@ -137,6 +142,64 @@ main {
 
 #footer nav a:hover {
   text-decoration: underline;
+}
+
+/* Styling for the login page */
+form {
+  max-width: 400px;
+  width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: var(--border-radius);
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: var(--primary-hover-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #005f99;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+#footer {
+  width: 100%;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 20px 0;
+  margin-top: 40px;
+  text-align: center;
 }
 
 @media (prefers-color-scheme: light) {
