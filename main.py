@@ -18,9 +18,16 @@ def extract_key_colors(image, num_colors=5):
     return labels, colors
 
 
-def create_masks_from_colors(labels, colors):
+def sort_colors_by_brightness(colors):
+    # Calculate brightness using a weighted sum (perceived brightness formula)
+    brightness = np.dot(colors, [0.299, 0.587, 0.114])
+    sorted_indices = np.argsort(brightness)  # Darkest to lightest
+    return colors[sorted_indices], sorted_indices
+
+
+def create_masks_from_colors(labels, colors, sorted_indices):
     masks = []
-    for i in range(len(colors)):
+    for i in sorted_indices:
         mask = np.where(labels == i, 255, 0).astype(np.uint8)
         masks.append(mask)
     return masks
@@ -28,32 +35,6 @@ def create_masks_from_colors(labels, colors):
 
 def rgb_to_hex(rgb):
     return '{:02x}{:02x}{:02x}'.format(rgb[0], rgb[1], rgb[2])
-
-
-def generate_stl_from_mask(mask, layer_height=1):
-    h, w = mask.shape
-    vertices = []
-    faces = []
-
-    for y in range(h):
-        for x in range(w):
-            if mask[y, x] == 255:
-                vertices.append([x, y, 0])
-                vertices.append([x, y, layer_height])
-
-    if len(vertices) < 3:
-        return None
-
-    vertices = np.array(vertices)
-    for i in range(0, len(vertices) - 2, 2):
-        faces.append([i, i + 1, i + 2])
-
-    mesh_data = mesh.Mesh(np.zeros(len(faces), dtype=mesh.Mesh.dtype))
-    for j, f in enumerate(faces):
-        for k in range(3):
-            mesh_data.vectors[j][k] = vertices[f[k], :]
-
-    return mesh_data
 
 
 def save_png_from_mask(mask, color, hex_color, layer_number, save_dir):
@@ -69,6 +50,37 @@ def save_png_from_mask(mask, color, hex_color, layer_number, save_dir):
     colored_image.save(png_filename)
     return png_filename
 
+def save_stl_from_mask(mask, layer_number, save_dir):
+    h, w = mask.shape
+    vertices = []
+    faces = []
+
+    for y in range(h):
+        for x in range(w):
+            if mask[y, x] == 255:
+                # Add vertices for a square at each pixel
+                z = layer_number * 0.1  # Adjust height for each layer
+                v0 = [x, y, z]
+                v1 = [x + 1, y, z]
+                v2 = [x + 1, y + 1, z]
+                v3 = [x, y + 1, z]
+                vertices.extend([v0, v1, v2, v3])
+                base_idx = len(vertices) - 4
+                faces.append([base_idx, base_idx + 1, base_idx + 2])
+                faces.append([base_idx, base_idx + 2, base_idx + 3])
+
+    vertices = np.array(vertices)
+    faces = np.array(faces)
+    if len(faces) > 0:
+        stl_mesh = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
+        for i, f in enumerate(faces):
+            for j in range(3):
+                stl_mesh.vectors[i][j] = vertices[f[j], :]
+
+        stl_filename = os.path.join(save_dir, f"layer_{layer_number}.stl")
+        stl_mesh.save(stl_filename)
+        return stl_filename
+    return None
 
 class ImageFilterApp:
     def __init__(self, root):
@@ -152,34 +164,41 @@ class ImageFilterApp:
 
         num_colors = int(self.num_colors_slider.get())
         labels, colors = extract_key_colors(self.image, num_colors)
-        self.log_console(f"Extracted Colors: {colors.tolist()}")
 
-        masks = create_masks_from_colors(labels, colors)
+        # Sort colors by brightness (darkest to lightest)
+        colors, sorted_indices = sort_colors_by_brightness(colors)
+        self.log_console(f"Sorted Colors: {colors.tolist()}")
+
+        masks = create_masks_from_colors(labels, colors, sorted_indices)
+
+        # Initialize a cumulative mask with the same shape as individual masks
         cumulative_mask = np.zeros_like(masks[0], dtype=np.uint8)
-        base_mask = np.full_like(masks[0], 255)
 
         self.progress['maximum'] = len(colors) + 1
         self.progress['value'] = 0
 
-        save_png_from_mask(base_mask, (255, 255, 255), "ffffff", 0, self.save_dir)
-        cumulative_mask = np.maximum(cumulative_mask, base_mask)
+        total_layers = len(colors)  # Get the total number of layers
 
         for idx, (mask, color) in enumerate(zip(masks, colors)):
             hex_color = rgb_to_hex(color)
-            layer_number = idx + 1
-            filtered_mask = np.where((mask == 255) & (cumulative_mask == 255), 255, 0)
 
-            if np.count_nonzero(filtered_mask) == 0:
-                self.log_console(f"Skipping layer {layer_number}.")
-                continue
+            # Assign layer numbers in reverse order
+            layer_number = total_layers - idx
 
-            save_png_from_mask(filtered_mask, color, hex_color, layer_number, self.save_dir)
-            cumulative_mask = np.maximum(cumulative_mask, filtered_mask)
+            # Fill in any pixels from previous layers if they overlap in the current mask
+            mask = np.maximum(mask, cumulative_mask)
+
+            # Update the cumulative mask to include the current layer
+            cumulative_mask = np.maximum(cumulative_mask, mask)
+
+            # Save PNG and STL using the updated cumulative mask
+            save_png_from_mask(cumulative_mask, color, hex_color, layer_number, self.save_dir)
+            save_stl_from_mask(cumulative_mask, layer_number, self.save_dir)
 
             self.progress['value'] += 1
             self.root.update_idletasks()
 
-        self.log_console("Conversion Completed!")
+        self.log_console("Conversion Completed with Reversed Layer Order!")
         self.progress['value'] = len(colors) + 1
 
     def display_image(self, image):
