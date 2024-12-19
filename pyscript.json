@@ -1,0 +1,8 @@
+{
+  "name": "Pix2Print",
+  "description": "A Python script to convert images to 3D models",
+  "packages": ["Tkinter", "Pillow", "NumPy", "scikit-learn", "numpy-stl"],
+  "files": {
+	"./main.py": ""
+  }
+}
