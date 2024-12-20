@@ -5,13 +5,62 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.11.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.11.1/core.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.18.1/full/pyodide.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>templatesite</title>
+    <title>Pix2Print</title>
   </head>
   <body>
-    <div id="top-bar"></div> <!-- Add top bar -->
-    <div id="root"></div>
+    <h1>Pix2Print</h1>
+    <input type="file" id="fileInput" accept="image/*">
+    <button id="convertButton">Convert to STL</button>
+    <div id="output"></div>
     <script type="py" src="./main.py" config="./pyscript.json"></script>
-    <!-- <script type="module" src="/src/main.tsx"></script> -->
+    <script>
+      async function loadPyodideAndPackages() {
+        const pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/"
+        });
+        await pyodide.loadPackage(["numpy", "pillow", "scikit-learn", "stl"]);
+        return pyodide;
+      }
+
+      document.getElementById('convertButton').addEventListener('click', async () => {
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput.files.length === 0) {
+          alert('Please select an image file.');
+          return;
+        }
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const imageData = e.target.result;
+          const pyodide = await loadPyodideAndPackages();
+          const result = await pyodide.runPythonAsync(`
+            import main
+            image_data = "${imageData}"
+            png_files, stl_files = main.process_image(image_data)
+            png_files, stl_files
+          `);
+          const [pngFiles, stlFiles] = result.toJs();
+          const outputDiv = document.getElementById('output');
+          outputDiv.innerHTML = '';
+          pngFiles.forEach((file, index) => {
+            const img = document.createElement('img');
+            img.src = file;
+            img.alt = `Layer ${index}`;
+            outputDiv.appendChild(img);
+          });
+          stlFiles.forEach((file, index) => {
+            const link = document.createElement('a');
+            link.href = file;
+            link.download = `layer_${index}.stl`;
+            link.textContent = `Download STL Layer ${index}`;
+            outputDiv.appendChild(link);
+            outputDiv.appendChild(document.createElement('br'));
+          });
+        };
+        reader.readAsDataURL(file);
+      });
+    </script>
   </body>
-</html> 
+</html>
