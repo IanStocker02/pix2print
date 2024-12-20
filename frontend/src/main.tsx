@@ -1,11 +1,13 @@
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 
-import App from './App.tsx';
-import Start from './pages/start.tsx';
-import LoginPage from './pages/LoginPage.tsx';
-import ErrorPage from './pages/ErrorPage.tsx';
+import App from './App';
+import Start from './pages/start';
+import AboutUs from './pages/AboutUs';
+import LoginPage from './pages/LoginPage';
+import ErrorPage from './pages/ErrorPage';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <LoginPage />,
+      },
+      {
+        path: 'about',
+        element: <AboutUs />,
       },
     ],
   },

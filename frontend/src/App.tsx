@@ -1,8 +1,10 @@
+import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 const App = () => {
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
+  const isHomePage = location.pathname === '/';
 
   return (
     <div>
@@ -10,12 +12,12 @@ const App = () => {
       <h1>Pix2Print</h1>
         <nav>
           <a href="/" className="nav-link">Home</a>
-          <a href="/start" className="nav-link">Start Converting</a>
+          <a href="/about" className="nav-link">About</a>
           <a href="/login" className="nav-link">Login</a>
         </nav>
       </header>
 
-      {!isLoginPage && (
+      {isHomePage && !isLoginPage && (
         <main id="home-content">
           <section id="hero">
             <h2>Convert 3D Models Effortlessly</h2>
@@ -41,7 +43,7 @@ const App = () => {
         </main>
       )}
 
-      {!isLoginPage && (
+      {isHomePage && !isLoginPage && (
         <footer id="footer">
           <div className="container">
             <p>&copy; 2024 Pix2Print. All Rights Reserved.</p>

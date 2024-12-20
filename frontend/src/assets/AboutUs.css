@@ -8,13 +8,13 @@
     font-family: 'Inter Tight', system-ui, Avenir, Helvetica, Arial, sans-serif;
   }
   
-  h1 {
+.about-us  h1 {
     font-size: 2.5em;
     margin-bottom: 20px;
     color: var(--primary-color);
   }
   
-  h2 {
+.about-us  h2 {
     font-size: 2em;
     margin-bottom: 20px;
     color: var(--primary-color);

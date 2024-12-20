@@ -1,5 +1,5 @@
 const Start = () => {
-    return <div>This is Page 1</div>;
+    return <div></div>;
   };
   
 export default Start;
