@@ -131,8 +131,16 @@ class ImageFilterApp:
         self.num_colors_slider.set(5)
         self.num_colors_slider.grid(row=0, column=1, padx=5)
 
+        # Resolution Dropdown
+        self.resolution_label = ttk.Label(self.mid_frame, text="Resolution:")
+        self.resolution_label.grid(row=1, column=0, padx=5)
+
+        self.resolution_var = tk.StringVar(value="Low")
+        self.resolution_dropdown = ttk.Combobox(self.mid_frame, textvariable=self.resolution_var, values=["Low", "Medium", "High"])
+        self.resolution_dropdown.grid(row=1, column=1, padx=5)
+
         self.progress = ttk.Progressbar(self.mid_frame, orient='horizontal', length=400, mode='determinate')
-        self.progress.grid(row=1, columnspan=3, pady=10)
+        self.progress.grid(row=2, columnspan=3, pady=10)
 
         self.image_label = ttk.Label(self.bottom_frame)
         self.image_label.pack(pady=5)
@@ -163,7 +171,20 @@ class ImageFilterApp:
             return
 
         num_colors = int(self.num_colors_slider.get())
-        labels, colors = extract_key_colors(self.image, num_colors)
+        resolution = self.resolution_var.get()
+
+        # Adjust image resolution based on the selected option
+        if resolution == "High":
+            scale_factor = 4
+        elif resolution == "Medium":
+            scale_factor = 2
+        else:
+            scale_factor = 1
+
+        new_size = (self.image.width * scale_factor, self.image.height * scale_factor)
+        high_res_image = self.image.resize(new_size, Image.LANCZOS)
+
+        labels, colors = extract_key_colors(high_res_image, num_colors)
 
         # Sort colors by brightness (darkest to lightest)
         colors, sorted_indices = sort_colors_by_brightness(colors)

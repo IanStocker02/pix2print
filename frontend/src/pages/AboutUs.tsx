@@ -1,6 +1,6 @@
 // AboutUs.tsx
 import React from 'react';
-import './AboutUs.css'; // Optional: import a specific CSS file for this page
+import '../assets/AboutUs.css'; // Optional: import a specific CSS file for this page
 
 const AboutUs = () => {
   return (
