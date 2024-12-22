@@ -1,0 +1,50 @@
+.login {
+  margin-top: 100px
+}
+
+.login input {
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: var(--border-radius);
+  border: 1px solid #ccc;
+  text-align: ;
+}
+
+.login button {
+  display: block;
+  padding: 10px 20px;
+  background-color: var(--primary-hover-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  width: 100%;
+  transition: 300ms;
+}
+
+.login button:hover {
+  background-color: #005f99;
+  transition: 300ms;
+}
+
+.login a {
+  display: flex;
+  color: var(--primary-color);
+  text-decoration: none;
+  align-items: center;
+}
+
+.login a:hover {
+  text-decoration: underline;
+}
+
+
+.login h1 {
+  margin-top: 100px;
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  text-align: center;
+}
