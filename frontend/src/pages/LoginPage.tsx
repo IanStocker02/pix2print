@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SignupModal from '../components/SignupModal';
-import '../assets/SignupModal.css'
+import '../assets/LoginPage.css'
 
 const LoginPage = () => {
   const [isSignupOpen, setSignupOpen] = useState(false);
@@ -19,7 +19,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
+    <div className='login'>
       <h1>Login</h1>
 
       {isLoggedIn ? (

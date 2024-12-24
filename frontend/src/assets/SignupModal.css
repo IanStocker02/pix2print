@@ -8,6 +8,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+  pointer-events: none; /* Prevent interaction when not visible */
+}
+
+.modal-overlay.visible {
+  opacity: 1;
+  pointer-events: auto; /* Allow interaction when visible */
 }
 
 .modal-content {
@@ -16,8 +24,16 @@
   border-radius: 5px;
   width: 90%;
   max-width: 400px;
+  max-height: 400px;
   text-align: center;
   box-sizing: border-box;
+}
+
+.modal-content form h2 {
+  margin-top: 0;
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: var(--primary-color);
 }
 
 .modal-content form {
