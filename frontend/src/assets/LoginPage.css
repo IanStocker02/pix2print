@@ -20,7 +20,7 @@
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
-  width: 100%;
+  width: 105%;
   transition: 300ms;
 }
 

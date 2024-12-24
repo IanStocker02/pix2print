@@ -1,5 +1,0 @@
-FastAPI
-uvicorn
-SQLAlchemy
-PyJWT
-passlib[bcrypt]
