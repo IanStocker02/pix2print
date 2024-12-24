@@ -18,3 +18,5 @@ const SignupModal = ({ isOpen, onClose }) => {
 };
 
 export default SignupModal;
+
+

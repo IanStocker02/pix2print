@@ -1,23 +1,24 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import '../assets/AboutUs.css';
 
 const teamMembers = [
   {
-    name: 'Joey Vedder',
-    role: 'Full Stack Developer',
-    description: 'placeholder text',
+    name: 'Elliot Stocker',
+    role: 'Full-Stack Developer',
+    description: 'Elliot specializes in creating beautiful, responsive user interfaces with React and CSS.',
     imgSrc: 'https://via.placeholder.com/150',
   },
   {
-    name: 'Elliot Stocker',
-    role: 'Full Stack Developer',
-    description: 'placeholder text',
+    name: 'Joey Vedder',
+    role: 'Full-Stack Developer',
+    description: 'Joey is a master at building scalable APIs and managing databases effectively.',
     imgSrc: 'https://via.placeholder.com/150',
   },
   {
     name: 'Ian Stocker',
     role: 'Full-Stack Developer',
-    description: 'Charlie bridges the gap between front-end and back-end development with versatile skills.',
+    description: 'Ian bridges the gap between front-end and back-end development with versatile skills.',
     imgSrc: 'https://via.placeholder.com/150',
   },
 ];
@@ -25,6 +26,14 @@ const teamMembers = [
 const AboutUs = () => {
   return (
     <div className="about-us">
+      <Helmet>
+        <title>About Us - Pix2Print</title>
+        <meta name="description" content="Learn about Pix2Print and meet our dedicated team of developers." />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+      </Helmet>
       <header className="about-header">
         <h1>About Us</h1>
         <p>
@@ -42,7 +51,7 @@ const AboutUs = () => {
         <div className="team-grid">
           {teamMembers.map((member, index) => (
             <div key={index} className="team-card">
-              <img src={member.imgSrc} alt={`${member.name}`} className="team-photo" />
+              <img src={member.imgSrc} alt={`${member.name}'s profile`} className="team-photo" />
               <h3>{member.name}</h3>
               <p className="team-role">{member.role}</p>
               <p className="team-description">{member.description}</p>
@@ -50,6 +59,9 @@ const AboutUs = () => {
           ))}
         </div>
       </section>
+      <footer>
+        <p>&copy; {new Date().getFullYear()} Pix2Print. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 };
