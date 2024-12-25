@@ -1,15 +1,29 @@
 from flask import Flask
-from routes.auth import auth_blueprint
-from routes.projects import projects_blueprint
+from flask_jwt_extended import JWTManager
+from flask_cors import CORS
+from dotenv import load_dotenv
+import os
 
+# Load environment variables
+load_dotenv()
+
+# Initialize the Flask app
 app = Flask(__name__)
 
-# Configurations (e.g., secret key, database URI)
-app.config["JWT_SECRET_KEY"] = "your-secret-key"
+# Load MongoDB URI and JWT secret from environment variables
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "your-jwt-secret-key")  # Default secret key
 
-# Register Blueprints
-app.register_blueprint(auth_blueprint)
-app.register_blueprint(projects_blueprint)
+# Enable CORS
+CORS(app)
 
-if __name__ == "__main__":
+# Initialize JWT
+jwt = JWTManager(app)
+
+# Import and register the auth blueprint
+from routes.auth import auth_blueprint  # Use the subfolder name 'auth'
+
+app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+if __name__ == '__main__':
     app.run(debug=True)

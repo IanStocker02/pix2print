@@ -1,38 +1,57 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token
-from models.user import User
-from utils.database import db_session
-import bcrypt
+from flask_jwt_extended import create_access_token, jwt_required
+from werkzeug.security import generate_password_hash, check_password_hash
+from pymongo import MongoClient
 
+# Create a Blueprint for auth
 auth_blueprint = Blueprint("auth", __name__)
 
-@auth_blueprint.route("/signup", methods=["POST"])
+# MongoDB setup (ensure this matches your main app configuration)
+client = MongoClient("mongodb://localhost:27017/pix2print")
+db = client.get_database("pix2print")
+users_collection = db.users
+
+# Signup route
+@auth_blueprint.route('/signup', methods=['POST'])
 def signup():
     data = request.json
-    username = data["username"]
-    password = data["password"]
+    username = data.get('username')
+    password = data.get('password')
 
-    # Hash password
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    if not username or not password:
+        return jsonify({'message': 'Username and password are required'}), 400
 
-    # Save to database
-    user = User(username=username, password=hashed_password)
-    db_session.add(user)
-    db_session.commit()
+    # Check if the user already exists
+    if users_collection.find_one({"username": username}):
+        return jsonify({'message': 'Username already exists'}), 400
 
-    return jsonify(message="User created successfully"), 201
+    # Hash the password and save to database
+    hashed_password = generate_password_hash(password)
+    users_collection.insert_one({"username": username, "password": hashed_password})
 
-@auth_blueprint.route("/login", methods=["POST"])
+    return jsonify({'message': 'User created successfully'}), 201
+
+# Login route
+@auth_blueprint.route('/login', methods=['POST'])
 def login():
     data = request.json
-    username = data["username"]
-    password = data["password"]
+    username = data.get('username')
+    password = data.get('password')
 
-    # Find user in database
-    user = db_session.query(User).filter_by(username=username).first()
-    if not user or not bcrypt.checkpw(password.encode('utf-8'), user.password):
-        return jsonify(message="Invalid username or password"), 401
+    if not username or not password:
+        return jsonify({'message': 'Username and password are required'}), 400
 
-    # Create JWT
+    # Find the user in the database
+    user = users_collection.find_one({"username": username})
+    if not user or not check_password_hash(user["password"], password):
+        return jsonify({'message': 'Invalid credentials'}), 401
+
+    # Generate JWT token
     access_token = create_access_token(identity=username)
-    return jsonify(access_token=access_token), 200
+    return jsonify({'message': f'Welcome, {username}', 'access_token': access_token}), 200
+
+# Example protected route
+@auth_blueprint.route('/protected', methods=['GET'])
+@jwt_required()
+def protected():
+    return jsonify({'message': 'You have access to this route'}), 200
