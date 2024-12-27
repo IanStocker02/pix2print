@@ -80,37 +80,54 @@ h1 {
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+  padding: 0 20px;
 }
 
 .team-card {
-  background-color: #2a2a2a; 
-  padding: 20px;
+  background-color: var(--background-color);
+  border: 1px solid var(--nav-border-color);
+  padding: 20px 15px;
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  text-align: center;
   transition: transform var(--transition-duration), box-shadow var(--transition-duration);
 }
 
 .team-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 
+              0 0 15px 4px var(--primary-hover-color); /* Glow effect */
+}
+
+
+.team-card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 2px solid var(--primary-hover-color);
 }
 
 .team-card h3 {
-  font-size: 1.5em;
-  color: #ffd700;
-  margin-bottom: 10px;
+  font-size: 1.4em;
+  color: var(--primary-hover-color);
+  margin-bottom: 8px;
 }
 
 .team-card .team-role {
+  font-size: 1.1em;
   font-weight: var(--font-weight-medium);
-  margin-bottom: 10px;
+  color: var(--text-color);
+  margin-bottom: 12px;
 }
 
 .team-card .team-description {
   font-size: 1em;
+  color: #b0b0b0;
+  line-height: 1.5;
 }
 
 footer {
