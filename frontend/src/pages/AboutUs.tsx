@@ -7,19 +7,16 @@ const teamMembers = [
     name: 'Elliot Stocker',
     role: 'Full-Stack Developer',
     description: 'Elliot specializes in creating beautiful, responsive user interfaces with React and CSS.',
-    imgSrc: 'https://via.placeholder.com/150',
   },
   {
     name: 'Joey Vedder',
     role: 'Full-Stack Developer',
     description: 'Joey is a master at building scalable APIs and managing databases effectively.',
-    imgSrc: 'https://via.placeholder.com/150',
   },
   {
     name: 'Ian Stocker',
     role: 'Full-Stack Developer',
     description: 'Ian bridges the gap between front-end and back-end development with versatile skills.',
-    imgSrc: 'https://via.placeholder.com/150',
   },
 ];
 
@@ -51,7 +48,6 @@ const AboutUs = () => {
         <div className="team-grid">
           {teamMembers.map((member, index) => (
             <div key={index} className="team-card">
-              <img src={member.imgSrc} alt={`${member.name}'s profile`} className="team-photo" />
               <h3>{member.name}</h3>
               <p className="team-role">{member.role}</p>
               <p className="team-description">{member.description}</p>

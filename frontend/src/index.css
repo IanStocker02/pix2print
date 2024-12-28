@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-  --primary-color: #0077b6; 
-  --primary-hover-color: #0096d6; 
-  --background-color: #f5f5f5; 
-  --text-color: #333; 
-  --nav-background-color: #ffffff; 
-  --nav-border-color: #e0e0e0; 
+  --primary-color: #1c1c1c;      
+  --primary-hover-color: #ffd700;
+  --background-color: #2a2a2a;    
+  --text-color: #dcdcdc;        
+  --nav-background-color: #333333;
+  --nav-border-color: #444444;
   --font-family: 'Inter Tight', system-ui, Avenir, Helvetica, Arial, sans-serif;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
@@ -14,6 +14,17 @@
   --border-radius: 8px;
   --transition-duration: 0.3s;
 }
+
+
+.light-mode {
+  --primary-color: #0077b6; 
+  --primary-hover-color: #0096d6;
+  --background-color: #f5f5f5;  
+  --text-color: #333;         
+  --nav-background-color: #ffffff;  
+  --nav-border-color: #e0e0e0;    
+}
+
 
 body {
   font-family: var(--font-family);
@@ -114,7 +125,7 @@ main {
 }
 
 .feature {
-  background-color: #fff;
+  background-color: gray;
   padding: 20px;
   border-radius: var(--border-radius);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -152,6 +163,21 @@ main {
   padding: 20px 0;
   margin-top: 40px;
   text-align: center;
+}
+
+.toggle-theme-btn {
+  background-color: var(--primary-hover-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-duration);
+}
+
+.toggle-theme-btn:hover {
+  background-color: var(--primary-color);
 }
 
 @media (prefers-color-scheme: light) {
