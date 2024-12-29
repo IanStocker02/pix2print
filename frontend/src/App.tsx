@@ -42,7 +42,9 @@ const App = () => {
         <nav>
           <a href="/" className="nav-link">Home</a>
           <a href="/about" className="nav-link">About</a>
+          <a href="/billing" className="nav-link">Pricing</a>
           <a href="/login" className="nav-link">Login</a>
+          
         </nav>
         <button onClick={toggleDarkMode} className="toggle-theme-btn">
           {isDarkMode ? '🤢' : '🙂‍↕️'}

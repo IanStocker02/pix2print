@@ -8,6 +8,7 @@ import Start from './pages/start';
 import AboutUs from './pages/AboutUs';
 import LoginPage from './pages/LoginPage';
 import ErrorPage from './pages/ErrorPage';
+import Billing from './pages/Pricing';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
         path: 'about',
         element: <AboutUs />,
       },
+      {
+        path: 'billing',
+        element: <Billing/>,
+      }
     ],
   },
 ]);
