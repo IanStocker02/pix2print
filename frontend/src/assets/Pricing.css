@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #1c1c1c;  
+  --primary-hover-color: #ffd700;  
+  --background-color: #2a2a2a;  
+  --text-color: #dcdcdc;  
+  --nav-background-color: #333333;  
+  --border-color: #444444;  
+  --font-family: 'Orbitron', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --border-radius: 8px;
+  --transition-duration: 0.3s;
+}
+
+.pricing {
+  display: flex;
+  flex-direction: column; /* Ensure the h1 is above the pricing table */
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0;
+  background-color: var(--background-color);
+}
+
+.pricing h1 {
+  font-size: 2.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.pricing-table {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px; /* Add some space between the items */
+}
+
+.item {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform var(--transition-duration), box-shadow var(--transition-duration);
+}
+
+.item h2 {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 10px;
+}
+
+.item p {
+  font-size: 1rem;
+  font-weight: var(--font-weight-normal);
+  margin-bottom: 10px;
+}
+
+.item button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--primary-color);
+  transition: background-color var(--transition-duration);
+  color: white;
+  cursor: pointer;
+}
+
+.item button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 
+              0 0 15px 4px var(--primary-hover-color); /* Glow effect */
+}
