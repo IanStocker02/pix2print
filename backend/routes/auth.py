@@ -7,8 +7,8 @@ from pymongo import MongoClient
 auth_blueprint = Blueprint("auth", __name__)
 
 # MongoDB setup (ensure this matches your main app configuration)
-client = MongoClient("mongodb://localhost:27017/pix2print")
-db = client.get_database("pix2print")
+client = MongoClient("mongodb://localhost:27017")
+db = client.pix2print
 users_collection = db.users
 
 # Signup route
@@ -20,6 +20,9 @@ def signup():
 
     if not username or not password:
         return jsonify({'message': 'Username and password are required'}), 400
+
+    if len(username) < 3 or len(password) < 6:
+        return jsonify({'message': 'Username must be at least 3 characters and password at least 6 characters long'}), 400
 
     # Check if the user already exists
     if users_collection.find_one({"username": username}):
@@ -43,8 +46,11 @@ def login():
 
     # Find the user in the database
     user = users_collection.find_one({"username": username})
-    if not user or not check_password_hash(user["password"], password):
-        return jsonify({'message': 'Invalid credentials'}), 401
+    if not user:
+        return jsonify({'message': 'User does not exist'}), 404
+
+    if not check_password_hash(user["password"], password):
+        return jsonify({'message': 'Invalid password'}), 401
 
     # Generate JWT token
     access_token = create_access_token(identity=username)
