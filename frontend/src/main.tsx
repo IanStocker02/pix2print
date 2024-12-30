@@ -9,6 +9,7 @@ import AboutUs from './pages/AboutUs';
 import LoginPage from './pages/LoginPage';
 import ErrorPage from './pages/ErrorPage';
 import Billing from './pages/Pricing';
+import AccountPage from './pages/AccountPage';
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,11 @@ const router = createBrowserRouter([
       {
         path: 'billing',
         element: <Billing/>,
-      }
+      },
+      {
+        path: 'account',
+        element: <AccountPage />,
+      },
     ],
   },
 ]);

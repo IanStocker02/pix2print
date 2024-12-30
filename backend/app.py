@@ -11,7 +11,6 @@ load_dotenv()
 app = Flask(__name__)
 
 # Load MongoDB URI and JWT secret from environment variables
-app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "your-jwt-secret-key")  # Default secret key
 
 # Enable CORS
@@ -20,8 +19,11 @@ CORS(app)
 # Initialize JWT
 jwt = JWTManager(app)
 
+# MongoDB Connection (optional to show usage here, or delegate it to database.py)
+from utils.database import db  # Ensure your MongoDB connection file is correct
+
 # Import and register the auth blueprint
-from routes.auth import auth_blueprint  # Use the subfolder name 'auth'
+from routes.auth import auth_blueprint
 
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 

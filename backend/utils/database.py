@@ -1,11 +1,9 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from pymongo import MongoClient
 
-DATABASE_URL = "sqlite:///app.db"  # Replace with PostgreSQL URI for production
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+# MongoDB Connection URI (Change this when using MongoDB Atlas)
+DATABASE_URL = "mongodb://localhost:27017"
+DB_NAME = "pix2print"
 
-# Session
-db_session = SessionLocal()
+# MongoDB Client and Database
+client = MongoClient(DATABASE_URL)
+db = client[DB_NAME]
