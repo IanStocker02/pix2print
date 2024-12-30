@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import Scanner from './Scanner'; // Import the Scanner component
+// import Scanner from './Scanner'; // Scanner component commented out
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -38,7 +38,9 @@ const App = () => {
   return (
     <div>
       <header id="top-bar">
-        <h1>Pix2Print</h1>
+        <div className="header-container">
+          <h1 className="header">Pix2Print</h1>
+        </div>
         <nav>
           <a href="/" className="nav-link">Home</a>
           <a href="/about" className="nav-link">About</a>
@@ -50,35 +52,35 @@ const App = () => {
       </header>
 
       {isHomePage && !isLoginPage && (
-        <Scanner>
-          <main id="home-content">
-            <section id="hero">
-              <h2>Convert 3D Models Effortlessly</h2>
-              <p>
-                Transform your 3D models into various formats in seconds. Upload your file and get started!
-              </p>
-              <a href="/start" className="cta-button">Start Converting</a>
-            </section>
+        // <Scanner> // Scanner component commented out
+        <main id="home-content">
+          <section id="hero">
+            <h2>Convert 3D Models Effortlessly</h2>
+            <p>
+              Transform your 3D models into various formats in seconds. Upload your file and get started!
+            </p>
+            <a href="/start" className="cta-button">Start Converting</a>
+          </section>
 
-            <section id="features">
-              <h3>Key Features</h3>
-              <div className="feature">
-                <h4>Multiple Formats Supported</h4>
-                <p>Supports a wide range of 3D file formats for easy conversion.</p>
-              </div>
-              <div className="feature">
-                <h4>Fast and Easy</h4>
-                <p>Convert your 3D models with just a few clicks and get instant results.</p>
-              </div>
-              <div className="feature">
-                <h4>High-Quality Output</h4>
-                <p>
-                  Ensure your models look great after conversion with our advanced technology.
-                </p>
-              </div>
-            </section>
-          </main>
-        </Scanner>
+          <section id="features">
+            <h3>Key Features</h3>
+            <div className="feature">
+              <h4>Multiple Formats Supported</h4>
+              <p>Supports a wide range of 3D file formats for easy conversion.</p>
+            </div>
+            <div className="feature">
+              <h4>Fast and Easy</h4>
+              <p>Convert your 3D models with just a few clicks and get instant results.</p>
+            </div>
+            <div className="feature">
+              <h4>High-Quality Output</h4>
+              <p>
+                Ensure your models look great after conversion with our advanced technology.
+              </p>
+            </div>
+          </section>
+        </main>
+        // </Scanner> // Closing Scanner component commented out
       )}
 
       {isHomePage && !isLoginPage && (
