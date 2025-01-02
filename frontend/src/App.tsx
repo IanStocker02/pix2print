@@ -52,7 +52,7 @@ const App = () => {
           {isDarkMode ? '🤢' : '🙂‍↕️'}
         </button>
       </header>
-
+  
       {isHomePage && !isLoginPage && (
         // <Scanner> // Scanner component commented out
         <main id="home-content">
