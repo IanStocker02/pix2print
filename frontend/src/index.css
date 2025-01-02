@@ -17,8 +17,8 @@
 
 
 .light-mode {
-  --primary-color: #0077b6; 
-  --primary-hover-color: #0096d6;
+  --primary-color: #0f5f53; 
+  --primary-hover-color: blue; 
   --background-color: #f5f5f5;  
   --text-color: #333;         
   --nav-background-color: #ffffff;  
@@ -26,6 +26,12 @@
 }
 
 
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    padding: 10px;
+  }
+}
 body {
   font-family: var(--font-family);
   margin: 0;
@@ -107,18 +113,22 @@ main {
 }
 
 .cta-button {
-  background-color: var(--primary-hover-color);
-  color: white;
-  padding: 10px 20px;
-  text-decoration: none;
-  border-radius: var(--border-radius);
-  font-weight: var(--font-weight-medium);
-  transition: background-color var(--transition-duration);
+  background-color: var(--primary-hover-color); 
+  color: black !important; 
+  padding: 10px 20px; 
+  text-decoration: none; 
+  border-radius: var(--border-radius); 
+  font-weight: var(--font-weight-medium); 
+  transition: box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out; 
 }
 
 .cta-button:hover {
-  background-color: #0096d6;
+  background-color: #0096d6; 
+  box-shadow: 0 0 15px 5px #0096d6; 
+  color: white;
 }
+
+
 
 #features {
   margin-top: 40px;
@@ -129,6 +139,7 @@ main {
   flex-wrap: wrap; 
   align-items: stretch;
 }
+
 
 #features h3 {
   font-size: 2.2em;
@@ -145,15 +156,17 @@ main {
   background-color: #333;
   padding: 20px;
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 20px 5px var(--primary-hover-color);
+  transition: box-shadow var(--transition-duration);
   width: 100%;
   max-width: 300px; 
   text-align: center; 
 }
 
+
+
 .feature h4 {
   font-size: 1.8em;
-  text-decoration: underline;
   text-decoration-color: yellowgreen;
   color: var(--text-color);
   margin-bottom: 10px;
