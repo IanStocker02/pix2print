@@ -222,6 +222,25 @@ class ImageFilterApp:
         self.log_console("Conversion Completed with Reversed Layer Order!")
         self.progress['value'] = len(colors) + 1
 
+    def process_image(self, filepath, save_dir):
+        image = Image.open(filepath)
+        num_colors = 5  # Default number of colors, you can change this as needed
+
+        labels, colors = extract_key_colors(image, num_colors)
+        colors, sorted_indices = sort_colors_by_brightness(colors)
+        masks = create_masks_from_colors(labels, colors, sorted_indices)
+
+        cumulative_mask = np.zeros_like(masks[0], dtype=np.uint8)
+        total_layers = len(colors)
+
+        for idx, (mask, color) in enumerate(zip(masks, colors)):
+            hex_color = rgb_to_hex(color)
+            layer_number = total_layers - idx
+            mask = np.maximum(mask, cumulative_mask)
+            cumulative_mask = np.maximum(cumulative_mask, mask)
+            save_png_from_mask(cumulative_mask, color, hex_color, layer_number, save_dir)
+            save_stl_from_mask(cumulative_mask, layer_number, save_dir)
+
     def display_image(self, image):
         image.thumbnail((400, 400))
         tk_image = ImageTk.PhotoImage(image)
