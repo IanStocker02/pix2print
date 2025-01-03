@@ -3,7 +3,18 @@ from PIL import Image, ImageDraw
 import numpy as np
 from sklearn.cluster import KMeans
 from stl import mesh
+from flask import Flask, request, jsonify
+from werkzeug.utils import secure_filename
 
+app = Flask(__name__)
+
+# Configure upload and processed directories
+UPLOAD_FOLDER = 'uploads'
+PROCESSED_FOLDER = 'processed'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['PROCESSED_FOLDER'] = PROCESSED_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
 def extract_key_colors(image, num_colors=5):
     image_np = np.array(image.convert("RGB"))
@@ -15,12 +26,10 @@ def extract_key_colors(image, num_colors=5):
     labels = kmeans.labels_.reshape(h, w)
     return labels, colors
 
-
 def sort_colors_by_brightness(colors):
     brightness = np.dot(colors, [0.299, 0.587, 0.114])
     sorted_indices = np.argsort(brightness)  # Darkest to lightest
     return colors[sorted_indices], sorted_indices
-
 
 def create_masks_from_colors(labels, colors, sorted_indices):
     masks = []
@@ -28,7 +37,6 @@ def create_masks_from_colors(labels, colors, sorted_indices):
         mask = np.where(labels == i, 255, 0).astype(np.uint8)
         masks.append(mask)
     return masks
-
 
 def save_png_from_mask(mask, color, hex_color, layer_number, save_dir):
     h, w = mask.shape
@@ -42,7 +50,6 @@ def save_png_from_mask(mask, color, hex_color, layer_number, save_dir):
     png_filename = os.path.join(save_dir, f"{hex_color}_{layer_number}.png")
     colored_image.save(png_filename)
     return png_filename
-
 
 def save_stl_from_mask(mask, layer_number, save_dir):
     h, w = mask.shape
@@ -75,50 +82,46 @@ def save_stl_from_mask(mask, layer_number, save_dir):
         return stl_filename
     return None
 
-def convert_photo(self):
-        if not self.image:
-            self.log_console("No image uploaded.")
-            return
+@app.route('/process-image', methods=['POST'])
+def process_image_endpoint():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
 
-        num_colors = int(self.num_colors_slider.get())
-        resolution = self.resolution_var.get()
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
 
-        # Adjust image resolution based on the selected option
-        if resolution == "High":
-            scale_factor = 4
-        elif resolution == "Medium":
-            scale_factor = 2
-        else:
-            scale_factor = 1
+    if file and file.filename.endswith('.png'):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
 
-        new_size = (self.image.width * scale_factor, self.image.height * scale_factor)
-        high_res_image = self.image.resize(new_size, Image.LANCZOS)
+        try:
+            processed_message = process_image(file_path, app.config['PROCESSED_FOLDER'])
+            # Return the path to the processed file
+            return jsonify({'processedFilePath': processed_message}), 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
 
-        labels, colors = extract_key_colors(high_res_image, num_colors)
+    return jsonify({'error': 'Invalid file type'}), 400
 
-        # Sort colors by brightness (darkest to lightest)
-        colors, sorted_indices = sort_colors_by_brightness(colors)
-        self.log_console(f"Sorted Colors: {colors.tolist()}")
-
-        masks = create_masks_from_colors(labels, colors, sorted_indices)
-
-        # Initialize a cumulative mask with the same shape as individual masks
-        cumulative_mask = np.zeros_like(masks[0], dtype=np.uint8)
-
-        self.progress['maximum'] = len(colors) + 1
-        self.progress['value'] = 0
-
-        total_layers = len(colors)
-        
 def process_image(image_path, save_dir, num_colors=5):
     image = Image.open(image_path)
     labels, colors = extract_key_colors(image, num_colors)
     colors, sorted_indices = sort_colors_by_brightness(colors)
     masks = create_masks_from_colors(labels, colors, sorted_indices)
 
+    processed_files = []
+
     for idx, (mask, color) in enumerate(zip(masks, colors)):
         hex_color = f"{color[0]:02x}{color[1]:02x}{color[2]:02x}"
         layer_number = len(colors) - idx
-        save_png_from_mask(mask, color, hex_color, layer_number, save_dir)
-        save_stl_from_mask(mask, layer_number, save_dir)
-    return f"Processed image saved to {save_dir}"
+        png_file = save_png_from_mask(mask, color, hex_color, layer_number, save_dir)
+        stl_file = save_stl_from_mask(mask, layer_number, save_dir)
+        
+        processed_files.append({'png': png_file, 'stl': stl_file})
+
+    return f"Processed image saved to {save_dir}. Files: {processed_files}"
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
