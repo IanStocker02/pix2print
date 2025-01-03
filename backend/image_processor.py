@@ -75,7 +75,41 @@ def save_stl_from_mask(mask, layer_number, save_dir):
         return stl_filename
     return None
 
+def convert_photo(self):
+        if not self.image:
+            self.log_console("No image uploaded.")
+            return
 
+        num_colors = int(self.num_colors_slider.get())
+        resolution = self.resolution_var.get()
+
+        # Adjust image resolution based on the selected option
+        if resolution == "High":
+            scale_factor = 4
+        elif resolution == "Medium":
+            scale_factor = 2
+        else:
+            scale_factor = 1
+
+        new_size = (self.image.width * scale_factor, self.image.height * scale_factor)
+        high_res_image = self.image.resize(new_size, Image.LANCZOS)
+
+        labels, colors = extract_key_colors(high_res_image, num_colors)
+
+        # Sort colors by brightness (darkest to lightest)
+        colors, sorted_indices = sort_colors_by_brightness(colors)
+        self.log_console(f"Sorted Colors: {colors.tolist()}")
+
+        masks = create_masks_from_colors(labels, colors, sorted_indices)
+
+        # Initialize a cumulative mask with the same shape as individual masks
+        cumulative_mask = np.zeros_like(masks[0], dtype=np.uint8)
+
+        self.progress['maximum'] = len(colors) + 1
+        self.progress['value'] = 0
+
+        total_layers = len(colors)
+        
 def process_image(image_path, save_dir, num_colors=5):
     image = Image.open(image_path)
     labels, colors = extract_key_colors(image, num_colors)

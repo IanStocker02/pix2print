@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_from_directory
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from werkzeug.utils import secure_filename
-from image_processor import process_image
+from image_processor import process_image  # Ensure this is correctly defined and imported
 
 # Load environment variables
 load_dotenv()
@@ -26,41 +26,25 @@ from routes.auth import auth_blueprint
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
 # Image upload and process route
-@app.route('/upload', methods=['POST'])
+@app.route('/images/upload', methods=['POST'])
 def upload_image():
     if 'file' not in request.files:
-        return jsonify({"error": "No file uploaded"}), 400
-
+        return jsonify({"error": "No file part"}), 400
     file = request.files['file']
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
-
     filename = secure_filename(file.filename)
-    file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-    file.save(file_path)
+    filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    file.save(filepath)
+    
+    # Process the image using image_processor.py
+    processed_image_path = process_image(filepath, app.config["SAVE_FOLDER"])
+    
+    return jsonify({'message': 'Image processed successfully', 'filename': os.path.basename(processed_image_path)}), 200
 
-    save_dir = app.config["SAVE_FOLDER"]
-    process_image(file_path, save_dir, num_colors=5)
-
-    # Return the path to processed files (we'll assume the processed file is the first one for simplicity)
-    processed_files = os.listdir(save_dir)
-    if processed_files:
-        processed_file_path = processed_files[0]  # Adjust as needed to pick the correct file
-        return jsonify({"message": "File processed successfully", "file_path": processed_file_path})
-    else:
-        return jsonify({"error": "No processed files found"}), 500
-
-
-
-@app.route('/download/<filename>', methods=['GET'])
+@app.route('/images/download/<filename>', methods=['GET'])
 def download_file(filename):
-    save_dir = app.config["SAVE_FOLDER"]
-    file_path = os.path.join(save_dir, filename)
-    if not os.path.exists(file_path):
-        return jsonify({"error": "File not found"}), 404
-
-    return send_file(file_path, as_attachment=True)
-
+    return send_from_directory(app.config["SAVE_FOLDER"], filename)
 
 if __name__ == '__main__':
     app.run(debug=True)

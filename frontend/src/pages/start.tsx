@@ -37,7 +37,7 @@ const Start = () => {
     formData.append('file', selectedFile);
 
     try {
-      const response = await axios.post('http://localhost:8000/images/upload', formData, {
+      const response = await axios.post('http://localhost:5000/images/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -73,7 +73,7 @@ const Start = () => {
       {processedFilePath && (
         <div>
           <h2>Processed Image</h2>
-          <a href={`http://localhost:8000/images/download/${processedFilePath}`} download>
+          <a href={`http://localhost:5000/images/download/${processedFilePath}`} download>
             Download Processed Image
           </a>
         </div>
