@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #1c1c1c;  
+  --primary-hover-color: #ffd700;  
+  --background-color: #2a2a2a;  
+  --text-color: #dcdcdc;  
+  --nav-background-color: #333333;  
+  --border-color: #444444;  
+  --font-family: 'Orbitron', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --border-radius: 8px;
+  --transition-duration: 0.3s;
+}
+
+.pricing {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0;
+  background-color: var(--background-color);
+}
+
+.pricing h1 {
+  font-size: 2.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.pricing-table {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px; 
+}
+
+.item {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform var(--transition-duration), box-shadow var(--transition-duration);
+  border: 1px solid var(--border-color); 
+  overflow: hidden; 
+}
+
+.item h2 {
+  font-size: 1.75rem; 
+  font-weight: var(--font-weight-bold); 
+  color: var(--primary-hover-color); 
+  margin-bottom: 15px; 
+}
+
+.item p {
+  font-size: 1.1rem; 
+  font-weight: var(--font-weight-normal);
+  margin-bottom: 15px; 
+  color: var(--text-color);
+  line-height: 1.5; 
+}
+
+.item button {
+  padding: 12px 25px; 
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--primary-color);
+  transition: background-color var(--transition-duration), transform 0.3s ease-out;
+  color: white;
+  font-size: 1rem;
+  font-weight: var(--font-weight-bold); 
+  cursor: pointer;
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+}
+
+.item button:hover {
+  background-color: var(--primary-hover-color);
+  transform: translateY(-2px); 
+}
+
+.item:hover {
+  transform: translateY(-12px); 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 0 20px 6px var(--primary-hover-color); 
+}
+
+.item.instructor {
+  background-color: #f0f0f0; 
+  border: 1px solid #ddd; 
+  padding: 20px 20px 30px; 
+  background-image: url('../assets/images/dualWield.jpg');
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.3s ease;
+}
+
+.item.instructor:hover {
+  background-image: url('../assets/images/oiledUP.jpg');
+}
+
+.instructor h2,
+.instructor p {
+  position: relative;
+  z-index: 1;
+}
+
+.instructor-img {
+  display: none; 
+}
+
+.item.instructor:hover .instructor-img {
+  display: block; 
+}
+
+.instructor-img img {
+  width: 100px; 
+  height: 100px; 
+  border-radius: 50%; 
+  object-fit: cover; 
+  margin: 0 auto; 
+  transition: opacity 0.3s ease-in-out; 
+}
+
+.item.instructor:hover {
+  transform: translateY(-12px); 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 0 20px 6px var(--primary-hover-color); 
+}

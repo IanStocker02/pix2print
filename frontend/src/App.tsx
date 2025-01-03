@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-// import Scanner from './Scanner'; // Scanner component commented out
+import { Outlet, useLocation, Link } from 'react-router-dom';
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -35,6 +34,8 @@ const App = () => {
   const isLoginPage = location.pathname === '/login';
   const isHomePage = location.pathname === '/';
 
+  const isLoggedIn = localStorage.getItem('token');  // Assuming a token means user is logged in
+
   return (
     <div>
       <header id="top-bar">
@@ -42,24 +43,30 @@ const App = () => {
           <h1 className="header">Pix2Print</h1>
         </div>
         <nav>
-          <a href="/" className="nav-link">Home</a>
-          <a href="/about" className="nav-link">About</a>
-          <a href="/login" className="nav-link">Login</a>
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/about" className="nav-link">About</Link>
+          <Link to="/start" className="nav-link">Start Converting</Link>
+          <Link to="/billing" className="nav-link">Pricing</Link>
+          {isLoggedIn ? (
+            <Link to="/account" className="nav-link">My Account</Link>
+          ) : (
+            <Link to="/login" className="nav-link">Login</Link>
+          )}
         </nav>
         <button onClick={toggleDarkMode} className="toggle-theme-btn">
           {isDarkMode ? '🤢' : '🙂‍↕️'}
         </button>
       </header>
-  
+
+      {/* Conditional content and footer rendering */}
       {isHomePage && !isLoginPage && (
-        // <Scanner> // Scanner component commented out
         <main id="home-content">
           <section id="hero">
             <h2>Convert 3D Models Effortlessly</h2>
             <p>
               Transform your 3D models into various formats in seconds. Upload your file and get started!
             </p>
-            <a href="/start" className="cta-button">Start Converting</a>
+            <Link to="/start" className="cta-button">Start Converting</Link>
           </section>
 
           <section id="features">
@@ -74,13 +81,10 @@ const App = () => {
             </div>
             <div className="feature">
               <h4>High-Quality Output</h4>
-              <p>
-                Ensure your models look great after conversion with our advanced technology.
-              </p>
+              <p>Ensure your models look great after conversion with our advanced technology.</p>
             </div>
           </section>
         </main>
-        // </Scanner> // Closing Scanner component commented out
       )}
 
       {isHomePage && !isLoginPage && (

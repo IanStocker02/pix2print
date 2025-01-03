@@ -20,7 +20,7 @@
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
-  width: 100%;
+  width: 103%;
   transition: 300ms;
 }
 
@@ -48,3 +48,4 @@
   color: white;
   text-align: center;
 }
+
