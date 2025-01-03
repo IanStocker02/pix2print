@@ -1,13 +1,14 @@
 .scanner {
     position: relative;
-    height: 100vh;
+    width: 100vw; /* Added to make it span the full width */
+    height: 100vh; /* Keeps it spanning the full height */
     overflow: hidden;
     background: #1e1e1e; 
     color: white;
     font-family: Arial, sans-serif;
-  }
+}
   
-  .scan-beam {
+.scan-beam {
     position: absolute;
     width: 100%;
     height: 4px; 
@@ -15,24 +16,22 @@
     pointer-events: none;
     z-index: 10;
     transition: transform 0.1s ease-out;
-  }
+}
   
-  .content {
+.content {
     padding: 20px;
     z-index: 1;
-  }
+}
   
-  .content:hover {
+.content:hover {
     animation: glow 1s infinite alternate;
-  }
+}
   
-  
-  @keyframes glow {
+@keyframes glow {
     from {
-      color: white;
+        color: white;
     }
     to {
-      color: limegreen;
+        color: limegreen;
     }
-  }
-  
+}
