@@ -28,10 +28,13 @@ const Pricing = () => {
           <p>$15/month</p>
           <button>Select</button>
         </div>
-        <div className="item">
-          <h2>Mitch</h2>
-          <p>If you're Mitchell</p>
+        <div className="item instructor">
+          <h2>Instructor/TA</h2>
+          <p>If you're a coding Bootcamp instructor/TA (ie Justin)</p>
           <p>$150/month</p>
+          <div className="instructor-img">
+            <img src="../assets/images/oiledUP.jpg" alt="Instructor" />
+          </div>
           <button>Select</button>
         </div>
       </div>

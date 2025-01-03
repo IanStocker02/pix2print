@@ -64,12 +64,12 @@ const Start = () => {
       {selectedFile && (
         <div>
           <p>Selected File: {selectedFile.name}</p>
+          <button onClick={handleUpload} disabled={!selectedFile}>
+            Upload
+          </button>
           <button onClick={handleCancel}>Cancel</button>
         </div>
       )}
-      <button onClick={handleUpload} disabled={!selectedFile}>
-        Upload
-      </button>
       {processedFilePath && (
         <div>
           <h2>Processed Image</h2>
