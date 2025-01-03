@@ -161,9 +161,6 @@ class ImageFilterApp:
             self.display_image(self.image)
             self.log_console("Image uploaded successfully.")
 
-    def select_save_directory(self):
-        self.save_dir = filedialog.askdirectory()
-        self.log_console(f"Selected Save Location: {self.save_dir}")
 
     def convert_photo(self):
         if not self.image:
@@ -222,6 +219,27 @@ class ImageFilterApp:
         self.log_console("Conversion Completed with Reversed Layer Order!")
         self.progress['value'] = len(colors) + 1
 
+# Ensure upload and processed folders exist
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+    os.makedirs(app.config["PROCESSED_FOLDER"], exist_ok=True)
+
+    @app.route('/images/upload', methods=['POST'])
+    def upload_image():
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file part'}), 400
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No selected file'}), 400
+        if file:
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(filepath)
+            
+            # Process the image using main.py
+            process_image(filepath, app.config["PROCESSED_FOLDER"])
+            
+            return jsonify({'message': 'Image processed successfully', 'filename': filename}), 200
+
     def process_image(self, filepath, save_dir):
         image = Image.open(filepath)
         num_colors = 5  # Default number of colors, you can change this as needed
@@ -241,17 +259,6 @@ class ImageFilterApp:
             save_png_from_mask(cumulative_mask, color, hex_color, layer_number, save_dir)
             save_stl_from_mask(cumulative_mask, layer_number, save_dir)
 
-    def display_image(self, image):
-        image.thumbnail((400, 400))
-        tk_image = ImageTk.PhotoImage(image)
-        self.image_label.configure(image=tk_image)
-        self.image_label.image = tk_image
-
-    def log_console(self, message):
-        self.console_log.config(state="normal")
-        self.console_log.insert(tk.END, message + "\n")
-        self.console_log.config(state="disabled")
-        self.console_log.see(tk.END)
 
 
 if __name__ == "__main__":

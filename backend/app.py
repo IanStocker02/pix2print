@@ -4,7 +4,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from werkzeug.utils import secure_filename
-from main import process_image  # Import your main.py processing function
+from main import process_image, upload_image  # Import your main.py processing function
 
 # Load environment variables
 load_dotenv()
@@ -35,22 +35,8 @@ app.register_blueprint(auth_blueprint, url_prefix='/auth')
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 os.makedirs(app.config["PROCESSED_FOLDER"], exist_ok=True)
 
-@app.route('/images/upload', methods=['POST'])
-def upload_image():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-    if file:
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        file.save(filepath)
-        
-        # Process the image using main.py
-        process_image(filepath, app.config["PROCESSED_FOLDER"])
-        
-        return jsonify({'message': 'Image processed successfully', 'filename': filename}), 200
+# Register the upload_image route from main.py
+app.add_url_rule('/images/upload', 'upload_image', upload_image, methods=['POST'])
 
 @app.route('/images/download/<filename>', methods=['GET'])
 def download_file(filename):
