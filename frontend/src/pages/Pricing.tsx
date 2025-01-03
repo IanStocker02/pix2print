@@ -29,8 +29,8 @@ const Pricing = () => {
           <button>Select</button>
         </div>
         <div className="item">
-          <h2>Instructor/TA</h2>
-          <p>If you're a coding Bootcamp instructor/TA (ie Justin)</p>
+          <h2>Mitch</h2>
+          <p>If you're Mitchell</p>
           <p>$150/month</p>
           <button>Select</button>
         </div>

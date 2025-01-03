@@ -1,11 +1,10 @@
 from pymongo import MongoClient
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
+from utils.database import db  # Import the database connection
 
-client = MongoClient("mongodb://localhost:27017")
-db = client.pix2print  # Replace with your database name
 users_collection = db.users  # Replace with your collection name
 
-# Example of inserting a user
 def create_user(username: str, password: str):
     if users_collection.find_one({"username": username}):
         raise ValueError("Username already exists")
@@ -19,3 +18,9 @@ def create_user(username: str, password: str):
     }
     users_collection.insert_one(user)
     return user
+
+def find_user(username: str):
+    return users_collection.find_one({"username": username})
+
+def verify_password(stored_password: str, provided_password: str):
+    return check_password_hash(stored_password, provided_password)

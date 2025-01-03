@@ -22,9 +22,8 @@ jwt = JWTManager(app)
 # MongoDB Connection (optional to show usage here, or delegate it to database.py)
 from utils.database import db  # Ensure your MongoDB connection file is correct
 
-# Import and register the auth blueprint
+# Register blueprints
 from routes.auth import auth_blueprint
-
 app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
 if __name__ == '__main__':
