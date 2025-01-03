@@ -1,7 +1,12 @@
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
 
-# MongoDB Connection URI (Change this when using MongoDB Atlas)
-DATABASE_URL = "mongodb://localhost:27017"
+# Load environment variables
+load_dotenv()
+
+# MongoDB Connection URI
+DATABASE_URL = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
 DB_NAME = "pix2print"
 
 # MongoDB Client and Database

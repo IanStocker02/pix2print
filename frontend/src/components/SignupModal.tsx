@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../assets/SignupModal.css';
 
 const SignupModal = ({ isOpen, onClose, onSignup }: { 
@@ -11,7 +12,7 @@ const SignupModal = ({ isOpen, onClose, onSignup }: {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSignupSubmit = (e: React.FormEvent) => {
+  const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username || !password || !confirmPassword) {
       setErrorMessage('All fields are required.');
@@ -21,21 +22,24 @@ const SignupModal = ({ isOpen, onClose, onSignup }: {
       setErrorMessage('Passwords do not match.');
       return;
     }
-    onSignup({ username, password });
-    setUsername('');
-    setPassword('');
-    setConfirmPassword('');
-    setErrorMessage('');
-    onClose();
+
+    try {
+      const response = await axios.post('http://localhost:5000/auth/signup', {
+        username,
+        password,
+      });
+      onSignup(response.data);
+      onClose();
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || 'Signup failed. Please try again.');
+    }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="modal-overlay visible">
+    <div className={`modal-overlay ${isOpen ? 'visible' : ''}`}>
       <div className="modal-content">
+        <h2>Sign Up</h2>
         <form onSubmit={handleSignupSubmit}>
-          <h2>Sign Up</h2>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           <input
             type="text"
@@ -56,7 +60,7 @@ const SignupModal = ({ isOpen, onClose, onSignup }: {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <button type="submit" className="signup-btn">Sign Up</button>
-          <button onClick={onClose}>Close</button>
+          <button type="button" onClick={onClose}>Close</button>
         </form>
       </div>
     </div>
