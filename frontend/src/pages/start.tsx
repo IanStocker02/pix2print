@@ -7,6 +7,7 @@ const Start = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [processedFilePath, setProcessedFilePath] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isConverting, setIsConverting] = useState<boolean>(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -30,23 +31,26 @@ const Start = () => {
     setProcessedFilePath(null);
   };
 
-  const handleUpload = async () => {
+  const handleConvert = async () => {
     if (!selectedFile) return;
 
+    setIsConverting(true);
     const formData = new FormData();
     formData.append('file', selectedFile);
 
     try {
-      const response = await axios.post('http://localhost:8000/images/upload', formData, {
+      const response = await axios.post('http://localhost:5000/images/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setProcessedFilePath(response.data.file_path);
+      setProcessedFilePath(response.data.processedFilePath);
       setError(null);
     } catch (error) {
-      console.error('Upload failed:', error);
-      setError('Upload failed. Please try again.');
+      console.error('Conversion failed:', error);
+      setError('Conversion failed. Please try again.');
+    } finally {
+      setIsConverting(false);
     }
   };
 
@@ -64,8 +68,8 @@ const Start = () => {
       {selectedFile && (
         <div>
           <p>Selected File: {selectedFile.name}</p>
-          <button onClick={handleUpload} disabled={!selectedFile}>
-            Upload
+          <button onClick={handleConvert} disabled={isConverting || !selectedFile}>
+            {isConverting ? 'Converting...' : 'Start Converting'}
           </button>
           <button onClick={handleCancel}>Cancel</button>
         </div>
@@ -73,7 +77,7 @@ const Start = () => {
       {processedFilePath && (
         <div>
           <h2>Processed Image</h2>
-          <a href={`http://localhost:8000/images/download/${processedFilePath}`} download>
+          <a href={`http://localhost:5000/images/download/${processedFilePath}`} download>
             Download Processed Image
           </a>
         </div>
