@@ -39,7 +39,7 @@ const Start = () => {
     formData.append('file', selectedFile);
 
     try {
-      const response = await axios.post('http://localhost:5000/process-image', formData, {
+      const response = await axios.post('http://localhost:5000/images/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
