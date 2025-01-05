@@ -8,6 +8,8 @@ const Start = () => {
   const [error, setError] = useState<string | null>(null);
   const [isConverting, setIsConverting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [numLayers, setNumLayers] = useState<number>(5);
+  const [quality, setQuality] = useState<string>('low');
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -23,6 +25,8 @@ const Start = () => {
     setIsConverting(true);
     const formData = new FormData();
     formData.append('file', selectedFile);
+    formData.append('num_layers', numLayers.toString());
+    formData.append('quality', quality);
 
     try {
       const response = await axios.post('http://localhost:5000/images/upload', formData, {
@@ -60,6 +64,25 @@ const Start = () => {
       {selectedFile && (
         <div>
           <p>Selected File: {selectedFile.name}</p>
+          <label>
+            Number of Layers:
+            <input
+              type="range"
+              min="2"
+              max="10"
+              value={numLayers}
+              onChange={(e) => setNumLayers(parseInt(e.target.value))}
+            />
+            {numLayers}
+          </label>
+          <label>
+            Quality:
+            <select value={quality} onChange={(e) => setQuality(e.target.value)}>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </label>
           <button onClick={handleConvert} disabled={isConverting || !selectedFile}>
             {isConverting ? 'Converting...' : 'Start Converting'}
           </button>

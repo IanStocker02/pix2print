@@ -5,7 +5,6 @@ from sklearn.cluster import KMeans
 from stl import mesh
 
 def extract_key_colors(image, num_colors=5):
-    # Dummy implementation for extracting key colors
     image = image.convert('RGB')
     np_image = np.array(image)
     np_image = np_image.reshape((np_image.shape[0] * np_image.shape[1], 3))
@@ -15,7 +14,6 @@ def extract_key_colors(image, num_colors=5):
     return colors
 
 def save_png_from_mask(mask, color, hex_color, layer_number, save_dir):
-    # Dummy implementation for saving PNG from mask
     filename = f"layer_{layer_number}.png"
     filepath = os.path.join(save_dir, filename)
     image = Image.fromarray(mask)
@@ -23,17 +21,46 @@ def save_png_from_mask(mask, color, hex_color, layer_number, save_dir):
     return filename
 
 def save_stl_from_mask(mask, layer_number, save_dir):
-    # Dummy implementation for saving STL from mask
-    filename = f"layer_{layer_number}.stl"
-    filepath = os.path.join(save_dir, filename)
-    with open(filepath, 'w') as f:
-        f.write("solid layer\nendsolid layer")
-    return filename
+    h, w = mask.shape
+    vertices = []
+    faces = []
 
-def process_image(input_path, output_folder):
+    for y in range(h):
+        for x in range(w):
+            if mask[y, x] == 255:
+                z = layer_number * 0.1
+                v0 = [x, y, z]
+                v1 = [x + 1, y, z]
+                v2 = [x + 1, y + 1, z]
+                v3 = [x, y + 1, z]
+                vertices.extend([v0, v1, v2, v3])
+                base_idx = len(vertices) - 4
+                faces.append([base_idx, base_idx + 1, base_idx + 2])
+                faces.append([base_idx, base_idx + 2, base_idx + 3])
+
+    vertices = np.array(vertices)
+    faces = np.array(faces)
+    if len(faces) > 0:
+        stl_mesh = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
+        for i, f in enumerate(faces):
+            for j in range(3):
+                stl_mesh.vectors[i][j] = vertices[f[j], :]
+
+        stl_filename = os.path.join(save_dir, f"layer_{layer_number}.stl")
+        stl_mesh.save(stl_filename)
+        return stl_filename
+    return None
+
+def process_image(input_path, output_folder, num_layers=5, quality='low'):
     image = Image.open(input_path)
-    colors = extract_key_colors(image)
-    masks = [np.array(image)] * len(colors)  # Dummy masks for demonstration
+    
+    if quality == 'high':
+        image = image.resize((image.width * 4, image.height * 4), Image.LANCZOS)
+    elif quality == 'medium':
+        image = image.resize((image.width * 2, image.height * 2), Image.LANCZOS)
+    
+    colors = extract_key_colors(image, num_layers)
+    masks = [np.array(image)] * len(colors)
     processed_files = []
 
     for idx, (mask, color) in enumerate(zip(masks, colors)):
