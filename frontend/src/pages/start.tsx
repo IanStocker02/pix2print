@@ -4,31 +4,17 @@ import '../assets/Start.css';
 
 const Start = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [processedFilePath, setProcessedFilePath] = useState<string | null>(null);
+  const [processedFiles, setProcessedFiles] = useState<Array<{ png: string, stl: string }> | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isConverting, setIsConverting] = useState<boolean>(false);
+  const [isConverting, setIsConverting] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
+    if (event.target.files) {
       const file = event.target.files[0];
-      if (file.type === 'image/png') {
-        setSelectedFile(file);
-        const url = URL.createObjectURL(file);
-        setPreviewUrl(url);
-      } else {
-        setError('Please upload a valid .png file.');
-        setSelectedFile(null);
-        setPreviewUrl(null);
-      }
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
     }
-  };
-
-  const handleCancel = () => {
-    setSelectedFile(null);
-    setPreviewUrl(null);
-    setError(null);
-    setProcessedFilePath(null);
   };
 
   const handleConvert = async () => {
@@ -44,21 +30,27 @@ const Start = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setProcessedFilePath(response.data.processedFilePath);
+      setProcessedFiles(response.data.files);
       setError(null);
     } catch (error) {
-      console.error('Conversion failed:', error);
-      setError('Conversion failed. Please try again.');
+      console.error('Upload failed:', error);
+      setError('Upload failed. Please try again.');
     } finally {
       setIsConverting(false);
     }
   };
 
+  const handleCancel = () => {
+    setSelectedFile(null);
+    setProcessedFiles(null);
+    setPreviewUrl(null);
+    setError(null);
+  };
+
   return (
     <div className="start">
       <h1>Upload Image</h1>
-      <input type="file" accept=".png" onChange={handleFileChange} />
-      {error && <p className="error">{error}</p>}
+      <input type="file" onChange={handleFileChange} />
       {previewUrl && (
         <div className="image-preview">
           <h2>Image Preview</h2>
@@ -74,14 +66,22 @@ const Start = () => {
           <button onClick={handleCancel}>Cancel</button>
         </div>
       )}
-      {processedFilePath && (
+      {processedFiles && (
         <div>
-          <h2>Processed Image</h2>
-          <a href={`http://localhost:5000/images/download/${processedFilePath}`} download>
-            Download Processed Image
-          </a>
+          <h2>Processed Files</h2>
+          {processedFiles.map((file, index) => (
+            <div key={index}>
+              <a href={`http://localhost:5000/images/download/${file.png}`} download>
+                Download PNG Layer {index + 1}
+              </a>
+              <a href={`http://localhost:5000/images/download/${file.stl}`} download>
+                Download STL Layer {index + 1}
+              </a>
+            </div>
+          ))}
         </div>
       )}
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };

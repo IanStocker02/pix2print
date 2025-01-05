@@ -38,13 +38,16 @@ def upload_image():
     file.save(filepath)
     
     # Process the image using image_processor.py
-    processed_image_path = process_image(filepath, app.config["SAVE_FOLDER"])
+    processed_files = process_image(filepath, app.config["SAVE_FOLDER"])
     
-    return jsonify({'message': 'Image processed successfully', 'filename': os.path.basename(processed_image_path)}), 200
+    return jsonify({'message': 'Image processed successfully', 'files': processed_files}), 200
 
 @app.route('/images/download/<filename>', methods=['GET'])
 def download_file(filename):
-    return send_from_directory(app.config["SAVE_FOLDER"], filename)
+    try:
+        return send_from_directory(app.config["SAVE_FOLDER"], filename)
+    except FileNotFoundError:
+        return jsonify({"error": "File not found"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
