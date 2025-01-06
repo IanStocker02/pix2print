@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+<<<<<<< HEAD
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd backend && python app.py",
     "dev:frontend": "cd frontend && npm start",
@@ -15,6 +16,13 @@
     "prebuild": "cd frontend && npm install",
     "test": "cd frontend && npm test",
     "eject": "cd frontend && npm run eject"
+=======
+    "dev": "cd frontend && vite",
+    "build": "cd frontend && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "cd frontend && vite preview",
+    "start": "concurrently \"cd frontend && npm run build\" \"cd backend && python app.py\""
+>>>>>>> b34a22545b62f62a520aac8aeca4af6cae70a04e
   },
   "dependencies": {
     "axios": "^1.7.9",
