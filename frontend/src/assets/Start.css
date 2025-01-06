@@ -90,3 +90,13 @@
   background-color: var(--primary-hover-color); 
   box-shadow: 0 0 15px 3px var(--primary-hover-color);
 }
+
+.start a {
+  margin: 15px;
+  color: rgb(85, 85, 201);
+  font-weight: var(--font-weight-medium);
+}
+
+.start a:hover {
+  color: aqua;
+}
