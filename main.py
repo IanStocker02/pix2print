@@ -1,3 +1,5 @@
+#This is the original main application, it serves no purpose in the overall project now.
+
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image, ImageTk, ImageDraw
