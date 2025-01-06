@@ -1,3 +1,5 @@
+/*make sure you ask ian and elliot what they think about the background and if they like it make sure you add the scan effect in each page tsx and css */
+
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
 
@@ -58,6 +60,9 @@ const App = () => {
         </button>
       </header>
 
+      {isHomePage && !isLoginPage && <div className="scanAnimation"></div>}
+
+
       {/* Conditional content and footer rendering */}
       {isHomePage && !isLoginPage && (
         <main id="home-content">
@@ -89,6 +94,7 @@ const App = () => {
 
       {isHomePage && !isLoginPage && (
         <footer id="footer">
+          <div className="scan-effect"></div>
           <div className="container">
             <p>&copy; 2024 Pix2Print. All Rights Reserved.</p>
           </div>

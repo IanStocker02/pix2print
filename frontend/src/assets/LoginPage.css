@@ -49,3 +49,7 @@
   text-align: center;
 }
 
+.login.light-mode {
+  color: black;
+}
+
