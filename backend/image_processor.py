@@ -11,7 +11,23 @@ def extract_key_colors(image, num_colors=5):
     kmeans = KMeans(n_clusters=num_colors)
     kmeans.fit(np_image)
     colors = kmeans.cluster_centers_
-    return colors
+    labels = kmeans.labels_
+    return labels.reshape(image.size[1], image.size[0]), colors
+
+def sort_colors_by_brightness(colors):
+    brightness = np.sum(colors, axis=1)
+    sorted_indices = np.argsort(brightness)
+    sorted_colors = colors[sorted_indices]
+    return sorted_colors, sorted_indices
+
+def create_masks_from_colors(labels, colors, sorted_indices):
+    h, w = labels.shape
+    masks = []
+    for color_idx in sorted_indices:
+        mask = np.zeros((h, w), dtype=np.uint8)
+        mask[labels == color_idx] = 255
+        masks.append(mask)
+    return masks
 
 def save_png_from_mask(mask, color, hex_color, layer_number, save_dir):
     filename = f"layer_{layer_number}.png"
@@ -21,51 +37,57 @@ def save_png_from_mask(mask, color, hex_color, layer_number, save_dir):
     return filename
 
 def save_stl_from_mask(mask, layer_number, save_dir):
-    h, w = mask.shape
+    filename = f"layer_{layer_number}.stl"
+    filepath = os.path.join(save_dir, filename)
+    
+    # Ensure mask is a NumPy array
+    if not isinstance(mask, np.ndarray):
+        raise ValueError("mask should be a NumPy array")
+    
+    h, w = mask.shape[:2]
     vertices = []
-    faces = []
+    vertex_indices = -np.ones((h, w), dtype=int)
 
+    # Create vertices and vertex indices
     for y in range(h):
         for x in range(w):
-            if mask[y, x] == 255:
-                z = layer_number * 0.1
-                v0 = [x, y, z]
-                v1 = [x + 1, y, z]
-                v2 = [x + 1, y + 1, z]
-                v3 = [x, y + 1, z]
-                vertices.extend([v0, v1, v2, v3])
-                base_idx = len(vertices) - 4
-                faces.append([base_idx, base_idx + 1, base_idx + 2])
-                faces.append([base_idx, base_idx + 2, base_idx + 3])
+            if mask[y, x] > 0:  # Assuming mask is a binary mask
+                vertex_indices[y, x] = len(vertices)
+                vertices.append([x, y, 0])
 
     vertices = np.array(vertices)
+    faces = []
+
+    # Create faces
+    for y in range(1, h):
+        for x in range(1, w):
+            if mask[y, x] > 0:
+                if vertex_indices[y, x] != -1 and vertex_indices[y, x - 1] != -1 and vertex_indices[y - 1, x] != -1:
+                    faces.append([vertex_indices[y, x], vertex_indices[y, x - 1], vertex_indices[y - 1, x]])
+                if vertex_indices[y - 1, x] != -1 and vertex_indices[y, x - 1] != -1 and vertex_indices[y - 1, x - 1] != -1:
+                    faces.append([vertex_indices[y - 1, x], vertex_indices[y, x - 1], vertex_indices[y - 1, x - 1]])
+
     faces = np.array(faces)
-    if len(faces) > 0:
-        stl_mesh = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
-        for i, f in enumerate(faces):
-            for j in range(3):
-                stl_mesh.vectors[i][j] = vertices[f[j], :]
 
-        stl_filename = os.path.join(save_dir, f"layer_{layer_number}.stl")
-        stl_mesh.save(stl_filename)
-        return stl_filename
-    return None
+    # Create the mesh
+    stl_mesh = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
+    for i, f in enumerate(faces):
+        for j in range(3):
+            stl_mesh.vectors[i][j] = vertices[f[j], :]
 
-def process_image(input_path, output_folder, num_layers=5, quality='low'):
+    stl_mesh.save(filepath)
+    return filename
+
+def process_image(input_path, output_folder, num_colors=5):
     image = Image.open(input_path)
-    
-    if quality == 'high':
-        image = image.resize((image.width * 4, image.height * 4), Image.LANCZOS)
-    elif quality == 'medium':
-        image = image.resize((image.width * 2, image.height * 2), Image.LANCZOS)
-    
-    colors = extract_key_colors(image, num_layers)
-    masks = [np.array(image)] * len(colors)
+    labels, colors = extract_key_colors(image, num_colors)
+    colors, sorted_indices = sort_colors_by_brightness(colors)
+    masks = create_masks_from_colors(labels, colors, sorted_indices)
     processed_files = []
 
     for idx, (mask, color) in enumerate(zip(masks, colors)):
         hex_color = f"{int(color[0]):02x}{int(color[1]):02x}{int(color[2]):02x}"
-        layer_number = idx + 1
+        layer_number = len(colors) - idx
         png_file = save_png_from_mask(mask, color, hex_color, layer_number, output_folder)
         stl_file = save_stl_from_mask(mask, layer_number, output_folder)
         processed_files.append({'png': png_file, 'stl': stl_file})
