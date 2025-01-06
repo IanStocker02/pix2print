@@ -1,4 +1,3 @@
-/*make sure you ask ian and elliot what they think about the background and if they like it make sure you add the scan effect in each page tsx and css */
 
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
@@ -31,7 +30,7 @@ const App = () => {
       return newMode;
     });
   };
-
+  
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
   const isHomePage = location.pathname === '/';
@@ -105,5 +104,4 @@ const App = () => {
     </div>
   );
 };
-
 export default App;

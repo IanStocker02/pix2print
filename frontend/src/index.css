@@ -15,15 +15,6 @@
   --transition-duration: 0.3s;
 }
 
-.light-mode {
-  --primary-color: #0f5f53;
-  --primary-hover-color: blue;
-  --background-color: #f5f5f5;
-  --text-color: #333;
-  --nav-background-color: #ffffff;
-  --nav-border-color: #e0e0e0;
-}
-
 body {
   transition: background-color 0.5s ease, color 0.5s ease;
   font-family: var(--font-family);
@@ -45,16 +36,15 @@ body.dark-mode {
 }
 
 body.light-mode {
-  --primary-color: #008080;
-  --primary-hover-color: #6a0dad;
-  --background-color: #f0f8ff;
-  --text-color: #333333;
-  --nav-background-color: #e6e6fa;
-  --nav-border-color: #d8bfd8;
-  --cta-background-color: #20b2aa;
-  --cta-hover-color: #8a2be2;
+  --primary-color: #3498db; 
+  --primary-hover-color: #2980b9; 
+  --background-color: #fdfdfd; 
+  --text-color: #2c3e50; 
+  --nav-background-color: #ecf0f1; 
+  --nav-border-color: #bdc3c7; 
+  --cta-background-color: #27ae60; 
+  --cta-hover-color: #2ecc71; 
 }
-
 
 h1 {
   font-size: 5em;
@@ -257,6 +247,30 @@ body.light-mode .feature h4 {
     }
   }
 }
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.custom-animated-cursor {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: url('path/to/your-cursor.svg') no-repeat center;
+  animation: bounce 1s infinite;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
 
 .scan-effect {
   position: absolute;
