@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
 
@@ -29,7 +30,7 @@ const App = () => {
       return newMode;
     });
   };
-
+  
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
   const isHomePage = location.pathname === '/';
@@ -57,6 +58,9 @@ const App = () => {
           {isDarkMode ? '🤢' : '🙂‍↕️'}
         </button>
       </header>
+
+      {isHomePage && !isLoginPage && <div className="scanAnimation"></div>}
+
 
       {/* Conditional content and footer rendering */}
       {isHomePage && !isLoginPage && (
@@ -89,6 +93,7 @@ const App = () => {
 
       {isHomePage && !isLoginPage && (
         <footer id="footer">
+          <div className="scan-effect"></div>
           <div className="container">
             <p>&copy; 2024 Pix2Print. All Rights Reserved.</p>
           </div>
@@ -99,5 +104,4 @@ const App = () => {
     </div>
   );
 };
-
 export default App;
