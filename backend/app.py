@@ -42,12 +42,10 @@ def upload_image():
     
     return jsonify({'message': 'Image processed successfully', 'files': processed_files}), 200
 
-@app.route('/images/download/<filename>', methods=['GET'])
+@app.route('/images/download/processed/<filename>')
 def download_file(filename):
-    try:
-        return send_from_directory(app.config["SAVE_FOLDER"], filename)
-    except FileNotFoundError:
-        return jsonify({"error": "File not found"}), 404
+    output_folder = app.config["SAVE_FOLDER"]
+    return send_from_directory(output_folder, filename)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -2,12 +2,13 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from pymongo import MongoClient
-
+import os
 # Create a Blueprint for auth
 auth_blueprint = Blueprint("auth", __name__)
 
 # MongoDB setup (ensure this matches your main app configuration)
-client = MongoClient("mongodb://localhost:27017")
+mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+client = MongoClient(mongo_uri)
 db = client.pix2print
 users_collection = db.users
 
