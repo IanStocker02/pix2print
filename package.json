@@ -10,7 +10,7 @@
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "cd backend && python app.py",
     "start:frontend": "cd frontend && npm start",
-    "serve": "cd frontend && npm start",
+    "serve": "serve -s frontend/dist",
     "build": "cd frontend && npm run build",
     "prebuild": "cd frontend && npm install",
     "test": "cd frontend && npm test",
@@ -26,7 +26,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
-    "react-router-dom": "^6.28.1"
+    "react-router-dom": "^6.28.1",
+    "serve": "^14.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
