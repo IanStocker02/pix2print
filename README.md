@@ -28,6 +28,7 @@ Pix2Print is a web-based application built with Python that enables users to upl
      ```
 
 4. Run the development server:
+   - pip install -r backend/requirements.txt to get all the Python requirements
     ```bash
     npm run dev
     ```
