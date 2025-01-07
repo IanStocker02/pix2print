@@ -2,7 +2,10 @@
 
 :root {
   --primary-color: #1c1c1c;
+  --primary-color: #1c1c1c;
   --primary-hover-color: #ffd700;
+  --background-color: #2a2a2a;
+  --text-color: #dcdcdc;
   --background-color: #2a2a2a;
   --text-color: #dcdcdc;
   --nav-background-color: #333333;
