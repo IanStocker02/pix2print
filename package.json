@@ -10,7 +10,7 @@
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "cd backend && python app.py",
     "start:frontend": "cd frontend && npm start",
-    "serve": "serve -s frontend/dist",
+    "serve": "cd frontend && npm run start",
     "build": "cd frontend && npm run build",
     "prebuild": "cd frontend && npm install",
     "test": "cd frontend && npm test",
