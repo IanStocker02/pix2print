@@ -1,3 +1,16 @@
+.start {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--background-color); 
+  color: var(--text-color); 
+  padding: 20px;
+  text-align: center;
+}
+
+
 .start input[type="range"] {
   -webkit-appearance: none;
   width: 250px;
@@ -112,7 +125,13 @@
   opacity: 1;
 }
 
+.start a {
+  margin: 15px;
+  color: rgb(85, 85, 201);
+  font-weight: var(--font-weight-medium);
+}
 
-
-
+.start a:hover {
+  color: aqua;
+}
 

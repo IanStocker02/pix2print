@@ -21,8 +21,7 @@ const teamMembers = [
     name: 'Ian Stocker',
     role: 'Full-Stack Developer',
     description: 'Ian is a master at building scalable APIs and managing back end processes.',
-    linkedin: 'https://www.linkedin.com/in/ianstocker', // Replace with actual LinkedIn URL
-    github: 'https://github.com/ianstocker', // Replace with actual GitHub URL
+    github: 'https://github.com/IanStocker02', 
   },
 ];
 
