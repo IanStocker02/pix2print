@@ -6,17 +6,17 @@ const teamMembers = [
   {
     name: 'Elliot Stocker',
     role: 'Full-Stack Developer',
-    description: 'Elliot specializes in creating beautiful, responsive user interfaces with React and CSS.',
+    description: 'Elliot bridges the gap between front-end and back-end development with versatile skills and database integration.',
   },
   {
     name: 'Joey Vedder',
     role: 'Full-Stack Developer',
-    description: 'Joey is a master at building scalable APIs and managing databases effectively.',
+    description: 'Joey specializes in creating beautiful, responsive user interfaces with React and CSS.',
   },
   {
     name: 'Ian Stocker',
     role: 'Full-Stack Developer',
-    description: 'Ian bridges the gap between front-end and back-end development with versatile skills.',
+    description: 'Ian is a master at building scalable APIs and managing back end processes.',
   },
 ];
 
