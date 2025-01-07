@@ -17,12 +17,12 @@
 
 
 .light-mode {
-  --primary-color: #1e90ff; /* A bold blue for primary elements */
-  --primary-hover-color: #0073e6; /* A slightly darker blue for hover effects */
-  --background-color: #ffffff; /* White background */
-  --text-color: #213547; /* Darker blue-gray for readability */
-  --nav-background-color: #f0f8ff; /* Light blue for navigation background */
-  --nav-border-color: #cce7ff; /* Subtle blue for border */
+  --primary-color: #1e90ff;
+  --primary-hover-color: #0073e6; 
+  --background-color: #ffffff; 
+  --text-color: #213547; 
+  --nav-background-color: #f0f8ff; 
+  --nav-border-color: #cce7ff; 
 }
 
 
@@ -33,6 +33,7 @@
   }
 }
 body {
+  transition: background-color 0.5s ease, color 0.5s ease;
   font-family: var(--font-family);
   margin: 0;
   display: flex;
@@ -171,10 +172,8 @@ main {
 }
 
 .light-mode .feature h4 {
-  color: white; /* Set text color to white in light mode */
+  color: white; 
 }
-
-
 
 .feature p {
   font-size: 1.1em;
@@ -322,5 +321,90 @@ main {
 
   .cta-button:hover {
     background-color: var(--primary-hover-color);
+  }
+}
+
+@media (max-width: 768px) {
+  #top-bar {
+    flex-direction: column;
+    padding: 50px 20px;
+    align-items: center;
+  }
+
+  nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  nav a {
+    font-size: 1em;
+  }
+
+  h1 {
+    font-size: 2.5em;
+    text-align: center;
+  }
+
+  #hero {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  #hero h2 {
+    font-size: 2em;
+  }
+
+  #hero p {
+    font-size: 1em;
+  }
+
+  .cta-button {
+    font-size: 0.9em;
+    padding: 8px 16px;
+  }
+
+  #features {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .feature {
+    max-width: 90%;
+  }
+
+  #footer {
+    padding: 15px 0;
+  }
+
+  .header {
+    font-size: 2em;
+  }
+}
+
+@media (max-width: 480px) {
+  #top-bar {
+    padding: 30px 10px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  nav a {
+    font-size: 0.9em;
+  }
+
+  .cta-button {
+    font-size: 0.8em;
+    padding: 6px 12px;
+  }
+
+  .feature h4 {
+    font-size: 1.5em;
+  }
+
+  .feature p {
+    font-size: 1em;
   }
 }
