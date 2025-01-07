@@ -2,7 +2,10 @@
 
 :root {
   --primary-color: #1c1c1c;
+  --primary-color: #1c1c1c;
   --primary-hover-color: #ffd700;
+  --background-color: #2a2a2a;
+  --text-color: #dcdcdc;
   --background-color: #2a2a2a;
   --text-color: #dcdcdc;
   --nav-background-color: #333333;
@@ -15,6 +18,23 @@
   --transition-duration: 0.3s;
 }
 
+
+.light-mode {
+  --primary-color: #1e90ff;
+  --primary-hover-color: #0073e6; 
+  --background-color: #ffffff; 
+  --text-color: #213547; 
+  --nav-background-color: #f0f8ff; 
+  --nav-border-color: #cce7ff; 
+}
+
+
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    padding: 10px;
+  }
+}
 body {
   transition: background-color 0.5s ease, color 0.5s ease;
   font-family: var(--font-family);
@@ -154,9 +174,8 @@ main {
   margin-bottom: 10px;
 }
 
-body.light-mode .feature h4 {
-  color: #ffffff;
-  text-decoration-color: #008080;
+.light-mode .feature h4 {
+  color: white; 
 }
 
 .feature p {
@@ -295,16 +314,16 @@ body.light-mode .feature h4 {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: var(--text-color);
+    background-color: var(--background-color);
   }
 
   nav a:hover {
-    color: #1e90ff;
+    color: var(--primary-hover-color);
   }
 
   .cta-button:hover {
-    background-color: #1e90ff;
+    background-color: var(--primary-hover-color);
   }
 }
 
