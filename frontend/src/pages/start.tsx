@@ -68,16 +68,14 @@ const Start = () => {
 
       {selectedFile && (
         <div className="settings">
-          <p>
-            <strong>Selected File:</strong> {selectedFile.name}
-          </p>
+         
 
           <div className="setting-group">
             <label>
               Number of Layers:
               <span className="tooltip">
                 ℹ️
-                <span className="tooltip-text">Adjust the number of image layers.</span>
+                <span className="tooltip-text">Adjust the number of image layers which can give better quality to the final product.</span>
               </span>
               <input
                 type="range"
